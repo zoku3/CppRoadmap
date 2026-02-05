@@ -10,6 +10,12 @@
 # Precompiled Headers
 *.gch
 *.pch
+.vs/
+**/x64/
+**/Debug/
+**/Release/
+*.user
+*.suo
 
 # Linker files
 *.ilk
