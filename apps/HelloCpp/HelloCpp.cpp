@@ -1,44 +1,60 @@
-﻿// HelloCpp.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
-//
-
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 
-	//xをminval～maxvalに収めて返す
-int Clamp(int x, int minval, int maxval)
+//day1
+//キャラデータの作成
+//表示
+//
+
+struct Character
 {
-	if (x < minval) return minval;
-	if (x > maxval) return maxval;
-	return x;
+	std::string name;
+	int hp;
+	int maxHp;
+	int atk;
+	int sp;
+	int spd;
+};
+
+static void PrintStatus(const Character& c)
+{
+	//const& コピーせず表示するだけ
+	std::cout << c.name
+		<< " HP: " << c.hp << "/" << c.maxHp
+		<< "  SP: " << c.sp
+		<< "  ATK: " << c.atk
+		<< "  SPD: " << c.spd
+		<< "\n";
+}
+
+static bool IsAlive(const Character& c)
+{
+	return c.hp > 0;
 }
 
 int main()
 {
-	//名前入力
-	std::string name;
-	std::cout << "名前を入力: ";
-	std::getline(std::cin, name);
-	std::cout << "こんにちは, " << name << "!\n";
+	Character player{ "kagi", 100, 100, 20, 30, 10 };
+	Character enemy{ "zoku", 200, 100, 10, 30, 10 };
 
-	//足し算
-	int a = 0, b = 0;
-	std::cout << "整数aを入力: ";
-	std::cin >> a;
-	std::cout << "整数a :" << a << "\n";
-	std::cout << "整数bを入力";
-	std::cin >> b;
-	std::cout << "整数b ;" << b << "\n";
-	std::cout << "a + b = " << (a + b) << "\n";
-	std::cout << "a - b = " << (a - b) << "\n";
-	std::cout << "a * b = " << (a * b) << "\n";
-	std::cout << "a / b = " << (a / b) << "\n";
-	std::cout << "a % b = " << (a % b) << "\n";
-	//c:clamp
-	int x = 0;
-	std::cout << "Xを入力（０～１００に収める）: ";
-	std::cin >> x;
-	std::cout << "Clamp結果　＝　" << Clamp(x, 0, 100) << "\n";
+	std::cout << "==== Battle Start===\n";
+	PrintStatus(player);
+	PrintStatus(enemy);
+	std::cout << "----------------------\n";
 
+	//戦闘ループの型を作る
+	int turn = 1;
+	while (IsAlive(player) && IsAlive(enemy) && turn <= 1)
+	{
+		std::cout << "ダメージ処理は次回";
+
+		std::cout << "------------------\n";
+		turn++;
+	}
+
+	std::cout << "=======END======\n";
 	return 0;
-	
 }
+
+
+
