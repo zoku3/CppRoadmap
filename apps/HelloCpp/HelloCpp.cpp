@@ -32,6 +32,26 @@ static bool IsAlive(const Character& c)
 	return c.hp > 0;
 }
 
+static void Damage(int& hp, int amout)
+{
+	hp -= amout;
+	if (hp < 0) hp = 0;
+}
+
+//hpをamout分だけ回復させる maxHpを超えるならmaxHpにする
+static void Heals(int& hp, int amout, int maxHp)
+{
+	hp += amout;
+	if (maxHp < hp) hp = maxHp;
+}
+
+static void Attack(const Character& attacker, Character& defender)
+{
+	//ログを出す
+	std::cout << attacker.name << "attaks" << attacker.atk << "\n";
+	Damage(defender.hp, attacker.atk);
+}
+
 int main()
 {
 	Character player{ "kagi", 100, 100, 20, 30, 10 };
@@ -42,19 +62,33 @@ int main()
 	PrintStatus(enemy);
 	std::cout << "----------------------\n";
 
-	//戦闘ループの型を作る
 	int turn = 1;
 	while (IsAlive(player) && IsAlive(enemy) && turn <= 1)
 	{
-		std::cout << "ダメージ処理は次回";
+		std::cout << "{ Turn " << turn << "}\n";
+		//プレイヤー攻撃
+		Attack(player, enemy);
+		PrintStatus(enemy);
 
-		std::cout << "------------------\n";
+		//敵が倒れたら
+		if (IsAlive(enemy)) break;
+
+		//敵の攻撃
+		Attack(enemy, player);
+		PrintStatus(player);
+
+		if (IsAlive(player))break;
+
+		//回復
+		std::cout << player.name << "heals 50!\n";
+		Heals(player.hp, 50, player.maxHp);
+		PrintStatus(player);
+
 		turn++;
 	}
 
-	std::cout << "=======END======\n";
+	std::cout << "===== Battle End =========\n";
 	return 0;
 }
-
 
 
