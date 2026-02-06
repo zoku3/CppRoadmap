@@ -27,6 +27,7 @@ static void PrintStatus(const Character& c)
 		<< "\n";
 }
 
+//生存確認
 static bool IsAlive(const Character& c)
 {
 	return c.hp > 0;
@@ -63,21 +64,34 @@ int main()
 	std::cout << "----------------------\n";
 
 	int turn = 1;
-	while (IsAlive(player) && IsAlive(enemy) && turn <= 1)
+	//どちらかが倒れるまでやる
+	while (IsAlive(player) && IsAlive(enemy))
 	{
-		std::cout << "{ Turn " << turn << "}\n";
-		//プレイヤー攻撃
+		std::cout << "[Turn " << turn << "]\n";
+
+		// 1) プレイヤー攻撃
 		Attack(player, enemy);
 		PrintStatus(enemy);
 
-		//敵が倒れたら
-		if (IsAlive(enemy)) break;
+		// 敵が倒れたらここで終了
+		if (!IsAlive(enemy))
+		{
+			std::cout << enemy.name << " defeated!\n";
+			break;
+		}
 
-		//敵の攻撃
+		// 2) 敵の反撃
 		Attack(enemy, player);
 		PrintStatus(player);
 
-		if (IsAlive(player))break;
+		// プレイヤーが倒れたらここで終了
+		if (!IsAlive(player))
+		{
+			std::cout << player.name << " defeated!\n";
+			break;
+		}
+
+
 
 		//回復
 		std::cout << player.name << "heals 50!\n";
